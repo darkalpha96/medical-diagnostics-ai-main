@@ -2,7 +2,7 @@ name: Push metrics
 
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "7,22,37,52 * * * *"   # every 15 min, off-peak minutes
   workflow_dispatch:
 
 concurrency:
@@ -12,7 +12,7 @@ concurrency:
 jobs:
   push:
     runs-on: ubuntu-latest
-    timeout-minutes: 6
+    timeout-minutes: 16
     defaults:
       run:
         working-directory: medical-diagnosis-ai-main
@@ -30,6 +30,7 @@ jobs:
       - run: python push_once.py
         env:
           PYTHONUNBUFFERED: "1"
+          RUN_SECONDS: "840"
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
           API_KEY: ${{ secrets.API_KEY }}
           SYSTEM_ID: ${{ secrets.SYSTEM_ID }}
